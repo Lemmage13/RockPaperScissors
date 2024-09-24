@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RockPaperScissors.GameLogic.RuleSets
 {
-    public class RuleSetClassic : IRuleSet
+    internal class RuleSetClassic : IRuleSet
     {
         public RuleSetClassic()
         {

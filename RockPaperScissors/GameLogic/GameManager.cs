@@ -17,8 +17,8 @@ namespace RockPaperScissors.GameLogic
         {
             _ruleSet = new RuleSetClassic();
             _ui = new ConsoleInterface();
-            _player1 = new HumanPlayer("Player 1", _ruleSet.Moves, _ui);
-            _player2 = new HumanPlayer("Player 2", _ruleSet.Moves, _ui);
+            _player1 = new HumanPlayer("Player 1", _ui);
+            _player2 = new ComputerPlayer("Computer");
         }
 
         private IRuleSet _ruleSet;
@@ -35,8 +35,8 @@ namespace RockPaperScissors.GameLogic
             while (playing)
             {
                 turn++;
-                Move p1Move = _player1.TakeTurn();
-                Move p2Move = _player2.TakeTurn();
+                Move p1Move = _player1.TakeTurn(_ruleSet.Moves);
+                Move p2Move = _player2.TakeTurn(_ruleSet.Moves);
 
                 movesTaken.Add(p1Move);
                 movesTaken.Add(p2Move);

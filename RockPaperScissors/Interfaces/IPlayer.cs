@@ -10,6 +10,6 @@ namespace RockPaperScissors.Interfaces
     internal interface IPlayer
     {
         public string Name { get; }
-        public Move TakeTurn();
+        public Move TakeTurn(List<Move> hand);
     }
 }

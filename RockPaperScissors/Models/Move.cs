@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RockPaperScissors.Models
 {
-    public class Move
+    internal class Move
     {
         public Move(string name)
         {

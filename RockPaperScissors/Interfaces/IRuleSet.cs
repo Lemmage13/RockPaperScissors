@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RockPaperScissors.Interfaces
 {
-    public interface IRuleSet
+    internal interface IRuleSet
     {
         public string Name { get; }
         public List<Move> Moves { get; }

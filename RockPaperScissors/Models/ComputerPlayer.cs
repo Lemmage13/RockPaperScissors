@@ -2,26 +2,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RockPaperScissors.Models
 {
-    internal class HumanPlayer: IPlayer
+    internal class ComputerPlayer: IPlayer
     {
-        private IUserInterface _ui;
-        public HumanPlayer(string name, IUserInterface ui)
+        public ComputerPlayer(string name)
         {
+            _random = new Random();
             Name = name;
-            _ui = ui;
         }
+        private Random _random;
 
         public string Name { get; }
 
         public Move TakeTurn(List<Move> hand)
         {
-            return _ui.PlayerTurn(this, hand);
+            //Computer player turn returns an unweighted random move
+            return hand[_random.Next(hand.Count)];
         }
     }
 }

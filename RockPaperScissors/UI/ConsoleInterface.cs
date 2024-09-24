@@ -12,7 +12,7 @@ namespace RockPaperScissors.UI
     {
         public Move PlayerTurn(HumanPlayer player, List<Move> hand)
         {
-            // display options in hand, or give up
+            // display options in hand
             //handle incorrect response from player
 
             Dictionary<string, Move> moveOptions = GenerateMoveOptions(hand);
@@ -34,6 +34,9 @@ namespace RockPaperScissors.UI
 
         private Dictionary<string, Move> GenerateMoveOptions(List<Move> moves)
         {
+            //generates a string - move dictionary based on move list provided
+            //dictionary allows user input to be passed directly to select move
+
             Dictionary<string, Move> options = new Dictionary<string, Move>();
             for (int i = 0; i < moves.Count; i++)
             {
