@@ -19,6 +19,7 @@ namespace RockPaperScissors.Models
 
         public string Name { get; }
 
+
         public Move TakeTurn(List<Move> hand)
         {
             return _ui.PlayerTurn(this, hand);
