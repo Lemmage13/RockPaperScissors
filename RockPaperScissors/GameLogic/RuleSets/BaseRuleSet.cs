@@ -10,6 +10,7 @@ namespace RockPaperScissors.GameLogic.RuleSets
 {
     internal class BaseRuleSet
     {
+        //Base rule set class to allow children access to the below method without repeating code unneccessarily
         public List<Move> Moves { get; protected set; }
         public List<MenuOption<Move>> GetMoveMenuOptions()
         {
