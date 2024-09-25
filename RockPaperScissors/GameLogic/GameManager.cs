@@ -28,7 +28,7 @@ namespace RockPaperScissors.GameLogic
             _playing = true;
         }
 
-        private IRuleSet _ruleSet;
+        private BaseRuleSet _ruleSet;
         private IUserInterface _ui;
         private IPlayer _player1;
         private IPlayer _player2;
