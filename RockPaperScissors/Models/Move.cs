@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RockPaperScissors.Interfaces;
+using RockPaperScissors.UI.UIModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,7 @@ namespace RockPaperScissors.Models
 {
     internal class Move
     {
+        //Move class holds the values that a given move defeats, allowing the game manager to determine a winner (or draw)
         public Move(string name)
         {
             Name = name;

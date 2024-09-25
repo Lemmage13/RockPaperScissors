@@ -9,6 +9,8 @@ namespace RockPaperScissors.Interfaces
 {
     internal interface IPlayer
     {
+        //implementing this interface allows the same method to be called for the human/computer player's turn
+        //could allow different computer player "profiles" with different weightings for different moves
         public string Name { get; }
         public Move TakeTurn(List<Move> hand);
     }

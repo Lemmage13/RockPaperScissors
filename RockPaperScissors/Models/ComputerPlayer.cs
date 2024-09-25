@@ -9,12 +9,12 @@ namespace RockPaperScissors.Models
 {
     internal class ComputerPlayer: IPlayer
     {
+        //ComputerPlayer implements IPlayer and returns a random move for its turn
         public ComputerPlayer(string name)
         {
-            _random = new Random();
             Name = name;
         }
-        private Random _random;
+        private static Random _random = new Random();
 
         public string Name { get; }
 

@@ -10,6 +10,7 @@ namespace RockPaperScissors.Models
 {
     internal class HumanPlayer: IPlayer
     {
+        //take turn method calls the injected ui to let the player take their turn
         private IUserInterface _ui;
         public HumanPlayer(string name, IUserInterface ui)
         {

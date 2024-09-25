@@ -9,7 +9,7 @@ namespace RockPaperScissors.Interfaces
 {
     internal interface IRuleSet
     {
-        public string Name { get; }
+        //Rule set interface allows any custom rule set to be designed and added to the game
         public List<Move> Moves { get; }
         public void InitialiseMoves();
     }

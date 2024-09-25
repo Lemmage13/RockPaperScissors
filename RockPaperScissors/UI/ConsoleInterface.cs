@@ -1,6 +1,7 @@
 ﻿using RockPaperScissors.GameLogic;
 using RockPaperScissors.Interfaces;
 using RockPaperScissors.Models;
+using RockPaperScissors.UI.UIModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,65 +12,65 @@ namespace RockPaperScissors.UI
 {
     internal class ConsoleInterface: IUserInterface
     {
-        public MainMenuOption MainMenu()
+        //Class to handle the display and collection of data from the console
+        //Contains functionality to display any list of MenuOption items to return a specified type, making this class highly extendable
+
+        public MainMenuOption MainMenu(List<MenuOption<MainMenuOption>> options)
         {
-            //display options to play multi player or against computer
-            List<MainMenuOption> options = new List<MainMenuOption>(  (MainMenuOption[])Enum.GetValues(typeof(MainMenuOption))  ); //uses list constructor that takes an array, which must be cast to the appropriate type: MainMenuOption[]
-            Dictionary<string, MainMenuOption> menuOptions = GenerateOptions(options);
+            //clear console to make way for the menu
+            Console.Clear();
+            //display options to play multi player, against computer, or to quit
 
             Console.WriteLine("MAIN MENU");
-            Console.WriteLine("Select game mode: \n");
-            foreach (KeyValuePair<string, MainMenuOption> option in menuOptions)
-            {
-                Console.WriteLine($"{option.Key}. {option.Value}\n");
-            }
-            string response = "";
-            while (!menuOptions.Keys.Contains(response))
-            {
-                Console.WriteLine("Enter the number associated with your choice.");
-                response = Console.ReadLine();
-            }
-            Console.Clear();
-            return menuOptions[response];
+            Console.WriteLine("How would you like to play?: \n");
+
+            return DisplayOptionsMenu<MainMenuOption>(options);
+        }
+
+        public GameModeOption SelectGameMode(List<MenuOption<GameModeOption>> options)
+        {
+            //display options to choose the rule set to use
+            Console.WriteLine("Which rules would you like to play with?");
+
+            return DisplayOptionsMenu<GameModeOption>(options);
         }
 
         public Move PlayerTurn(HumanPlayer player, List<Move> hand)
         {
-            //display options in hand
-            //handle incorrect response from player
+            //display options in hand and return appropriate value for player response
 
-            Dictionary<string, Move> moveOptions = GenerateOptions(hand);
-
-            Console.WriteLine($"{player.Name} select your move!");
-            foreach(KeyValuePair<string, Move> move in moveOptions)
-            {
-                Console.WriteLine($"{move.Key}. {move.Value.Name}\n");
-            }
-            string response = "";
-            while (!moveOptions.Keys.Contains(response))
-            {
-                Console.WriteLine("Enter the number associated with your choice.");
-                response = Console.ReadLine();
-            }
+            //clear console to tidy up the menu or hide the previous player's turn
             Console.Clear();
-            return moveOptions[response];
+
+            //convert Move objects to MenuOption objects to use the menu display logic below
+            //NOTE: I am absolutely sure there is a way to implement an interface or inherited class here that would remove the need for this conversion,
+            // but unfortunately everything I tried did not work, and I need to focus on other things now
+            List<MenuOption<Move>> moveOptions = new List<MenuOption<Move>>();
+            foreach (Move move in hand)
+            {
+                moveOptions.Add(new MenuOption<Move>(move.Name, move));
+            }
+
+            return DisplayOptionsMenu(moveOptions);
         }
 
         public void DisplayMoves(string player1Name, string player1Move, string player2Name, string player2Move)
         {
+            //displays the moves each player used to allow players to see that the game was won, drawn, or lost fairly
             Console.WriteLine($"{player1Name} has chosen: {player1Move}");
             Console.WriteLine($"{player2Name} has chosen: {player2Move}");
         }
 
         public void DeclareDraw()
         {
+            //displays that the game was a draw and waits for input to allow players to wait before trying again
             Console.WriteLine("It's a draw! Press any key to play again!");
             Console.ReadKey();
-            Console.Clear();
         }
 
         public void DisplayGameStats(int turnCount, List<Move> mostCommonMoves, int movesCount)
         {
+            //shows the collected statistics from the game, as specified in the design document
             Console.WriteLine($"That game took {turnCount} turns.");
             if (mostCommonMoves.Count == 1)
             {
@@ -90,6 +91,7 @@ namespace RockPaperScissors.UI
 
         private string CommonMovesStringBuilder(List<Move> moves)
         {
+            //private function to correctly assemble the string to display the most common moves in the case that there are more than one
             string movesString = moves[0].Name;
             for (int i = 1; i < moves.Count; i++)
             {
@@ -100,27 +102,79 @@ namespace RockPaperScissors.UI
 
         public void DeclareWinner(IPlayer player)
         {
+            //displays the winner of the game, and waits for player input to allow the player to process this information
             Console.WriteLine("The winner is...");
             Console.WriteLine($"{player.Name}!!!");
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
-            Console.Clear();
         }
 
-        private Dictionary<string, T> GenerateOptions<T>(List<T> options)
+        //Below methods provide functionality for displaying custom menus displaying options implementing the MenuOption class
+        //this approach allows the ui to render any set of options and return the appropriate object upon the users selection
+        private T DisplayOptionsMenu<T>(List<MenuOption<T>> options)
         {
-            //generates a dictionary associating a list of objects of some type to string numbers
-            //dictionary allows user input to be passed directly to select the option
-            //taking a generic type allows this method to be used for arbitrary options
+            //displays the specified menu options and returns the user selected value
 
-            Dictionary<string, T> optionDictionary = new Dictionary<string, T>();
+            //generates dictionary
+            Dictionary<string, MenuOption<T>> optionsDictionary = GenerateOptionsDictionary(options);
+
+            //uses original list to display selections as this guarantees order
             for (int i = 0; i < options.Count; i++)
             {
-                optionDictionary.Add((i + 1).ToString(), options[i]);
+                Console.WriteLine($"{i + 1}. {options[i].Name}");
+            }
+            string response = "";
+            while (!optionsDictionary.Keys.Contains(response))
+            {
+                Console.WriteLine("Please enter the number, first letter(s), or name associated with your choice!");
+                response = Console.ReadLine().ToLower();
+            }
+
+            return optionsDictionary[response].Value;
+        }
+        private Dictionary<string, MenuOption<T>> GenerateOptionsDictionary<T>(List<MenuOption<T>> options)
+        {
+            //generates a dictionary mapping a list of menu options to generated aliases
+            //dictionary allows user input to be passed directly to select the option
+
+            Dictionary<string, MenuOption<T>> optionDictionary = new Dictionary<string, MenuOption<T>>();
+            for (int i = 0; i < options.Count; i++)
+            {
+                //for each option, generate aliases
+                List<string> aliases = GenerateAliases(options[i].Name, i+1);
+                foreach (string alias in aliases)
+                {
+                    //map aliases to corresponding option
+                    //At present this means that if 2 options start with the same letter, that letter will not be permitted to select either option
+                    //NOTE: if you want to implement more rulesets or menus with more options with the same letter, either change these options, or consider a new implementation here
+                    if (!optionDictionary.ContainsKey(alias)){
+                        optionDictionary.Add(alias, options[i]);
+                        optionDictionary.Remove(alias);
+                    }
+                }
             }
             return optionDictionary;
         }
 
+        private List<string> GenerateAliases(string optionName, int number)
+        {
+            //Generates alias values for a menu option and its position in the menu
+            //this allows any of the number, the name, or the first characters of each word in the name to be used to select your choice
+            optionName = optionName.ToLower();
+            string[] splitName = optionName.Split(' ');
+            string firstletters = "";
+            foreach (string word in splitName)
+            {
+                firstletters += word.Substring(0,1);
+            }
+            List<String> aliases = new List<string>
+            {
+                optionName,
+                firstletters,
+                number.ToString()
+            };
+            return aliases;
+        }
     }
 }

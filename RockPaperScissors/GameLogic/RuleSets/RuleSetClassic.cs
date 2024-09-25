@@ -10,11 +10,12 @@ namespace RockPaperScissors.GameLogic.RuleSets
 {
     internal class RuleSetClassic : IRuleSet
     {
+        //representation of the classic ruleset of rock paper scissors
+        //assigns the 3 moves, and the moves that they each defeat
         public RuleSetClassic()
         {
             InitialiseMoves();
         }
-        public string Name { get; } = "Classic";
         public List<Move> Moves { get; } = new List<Move>();
         public void InitialiseMoves()
         {
