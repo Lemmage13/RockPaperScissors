@@ -16,7 +16,7 @@ namespace RockPaperScissors.GameLogic.RuleSets
         {
             Moves = InitialiseMoves();
         }
-        public List<Move> InitialiseMoves()
+        private List<Move> InitialiseMoves()
         {
             //makes and assigns defeats for each possible move
             List<Move> moves = new List<Move>();
