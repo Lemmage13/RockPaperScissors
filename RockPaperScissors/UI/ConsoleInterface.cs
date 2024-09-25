@@ -35,23 +35,14 @@ namespace RockPaperScissors.UI
             return DisplayOptionsMenu<GameModeOption>(options);
         }
 
-        public Move PlayerTurn(HumanPlayer player, List<Move> hand)
+        public Move PlayerTurn(HumanPlayer player, List<MenuOption<Move>> hand)
         {
             //display options in hand and return appropriate value for player response
 
             //clear console to tidy up the menu or hide the previous player's turn
             Console.Clear();
 
-            //convert Move objects to MenuOption objects to use the menu display logic below
-            //NOTE: I am absolutely sure there is a way to implement an interface or inherited class here that would remove the need for this conversion,
-            // but unfortunately everything I tried did not work, and I need to focus on other things now
-            List<MenuOption<Move>> moveOptions = new List<MenuOption<Move>>();
-            foreach (Move move in hand)
-            {
-                moveOptions.Add(new MenuOption<Move>(move.Name, move));
-            }
-
-            return DisplayOptionsMenu(moveOptions);
+            return DisplayOptionsMenu(hand);
         }
 
         public void DisplayMoves(string player1Name, string player1Move, string player2Name, string player2Move)

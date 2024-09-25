@@ -94,8 +94,8 @@ namespace RockPaperScissors.GameLogic
             while (playing)
             {
                 turn++;
-                Move p1Move = _player1.TakeTurn(_ruleSet.Moves);
-                Move p2Move = _player2.TakeTurn(_ruleSet.Moves);
+                Move p1Move = _player1.TakeTurn(_ruleSet);
+                Move p2Move = _player2.TakeTurn(_ruleSet);
 
                 movesTaken.Add(p1Move);
                 movesTaken.Add(p2Move);

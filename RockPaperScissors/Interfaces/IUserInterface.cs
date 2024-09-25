@@ -15,7 +15,7 @@ namespace RockPaperScissors.Interfaces
         //this simplifies the addition of a different type of ui later
         public MainMenuOption MainMenu(List<MenuOption<MainMenuOption>> options);
         public GameModeOption SelectGameMode(List<MenuOption<GameModeOption>> options);
-        public Move PlayerTurn(HumanPlayer player, List<Move> hand);
+        public Move PlayerTurn(HumanPlayer player, List<MenuOption<Move>> hand);
         public void DisplayMoves(string player1Name, string player1Move, string player2Name, string player2Move);
         public void DeclareDraw();
         public void DisplayGameStats(int turnCount, List<Move> mostCommonMoves, int movesCount);

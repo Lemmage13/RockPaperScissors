@@ -1,4 +1,5 @@
-﻿using RockPaperScissors.Interfaces;
+﻿using RockPaperScissors.GameLogic.RuleSets;
+using RockPaperScissors.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,10 @@ namespace RockPaperScissors.Models
         public string Name { get; }
 
 
-        public Move TakeTurn(List<Move> hand)
+        public Move TakeTurn(BaseRuleSet ruleSet)
         {
-            return _ui.PlayerTurn(this, hand);
+            //use injected rule set to pass correct options to ui
+            return _ui.PlayerTurn(this, ruleSet.GetMoveMenuOptions());
         }
     }
 }

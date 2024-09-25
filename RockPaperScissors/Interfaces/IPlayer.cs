@@ -1,4 +1,6 @@
-﻿using RockPaperScissors.Models;
+﻿using RockPaperScissors.GameLogic.RuleSets;
+using RockPaperScissors.Models;
+using RockPaperScissors.UI.UIModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,6 @@ namespace RockPaperScissors.Interfaces
         //implementing this interface allows the same method to be called for the human/computer player's turn
         //could allow different computer player "profiles" with different weightings for different moves
         public string Name { get; }
-        public Move TakeTurn(List<Move> hand);
+        public Move TakeTurn(BaseRuleSet ruleSet);
     }
 }
