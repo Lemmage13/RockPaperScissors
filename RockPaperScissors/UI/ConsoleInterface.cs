@@ -127,7 +127,7 @@ namespace RockPaperScissors.UI
             string response = "";
             while (!optionsDictionary.Keys.Contains(response))
             {
-                Console.WriteLine("Please enter the number, first letter(s), or name associated with your choice!");
+                Console.WriteLine("Please enter the number, first letter(s) (as long as there are no duplicates!), or name associated with your choice!");
                 response = Console.ReadLine().ToLower();
             }
 
@@ -150,6 +150,9 @@ namespace RockPaperScissors.UI
                     //NOTE: if you want to implement more rulesets or menus with more options with the same letter, either change these options, or consider a new implementation here
                     if (!optionDictionary.ContainsKey(alias)){
                         optionDictionary.Add(alias, options[i]);
+                    }
+                    else
+                    {
                         optionDictionary.Remove(alias);
                     }
                 }
