@@ -143,16 +143,19 @@ namespace RockPaperScissors.UI
             {
                 //for each option, generate aliases
                 List<string> aliases = GenerateAliases(options[i].Name, i+1);
+                List<string> forbiddenAliases = new List<string>();
                 foreach (string alias in aliases)
                 {
                     //map aliases to corresponding option
-                    //At present this means that if 2 options start with the same letter, that letter will not be permitted to select either option
-                    //NOTE: if you want to implement more rulesets or menus with more options with the same letter, either change these options, or consider a new implementation here
+                    //At present this means that if 2 or more options start with the same letter, that letter will not be permitted to select either option
                     if (!optionDictionary.ContainsKey(alias)){
-                        optionDictionary.Add(alias, options[i]);
+                        if(!forbiddenAliases.Contains(alias)){
+                            optionDictionary.Add(alias, options[i]);
+                        }
                     }
                     else
                     {
+                        forbiddenAliases.Add(alias);
                         optionDictionary.Remove(alias);
                     }
                 }
